@@ -101,3 +101,54 @@ class OpenAIChatCompletionChunkResponse(BaseModel):
     model: str = Field(..., description="模型")
     system_fingerprint: Optional[str] = Field(default=None, description="系统指纹")
     choices: List[OpenAIChatCompletionChunkChoice] = Field(..., description="选项")
+
+
+# ============== OpenAI Images API Compatible ==============
+
+class ImageGenerationRequest(BaseModel):
+    """Image generation request (OpenAI compatible)"""
+    
+    model: str = Field(default="grok-imagine-0.9", description="Model name")
+    prompt: str = Field(..., description="Image description", min_length=1, max_length=4000)
+    n: int = Field(default=1, ge=1, le=4, description="Number of images to generate")
+    size: Optional[str] = Field(default="1024x1024", description="Image size")
+    quality: str = Field(default="standard", description="Image quality")
+    response_format: str = Field(default="url", description="Response format (url or b64_json)")
+    style: Optional[str] = Field(default=None, description="Image style")
+    user: Optional[str] = Field(default=None, description="User identifier")
+
+
+class ImageData(BaseModel):
+    """Generated image data (OpenAI compatible)"""
+    url: Optional[str] = Field(default=None, description="Image URL")
+    b64_json: Optional[str] = Field(default=None, description="Base64 encoded image")
+    revised_prompt: Optional[str] = Field(default=None, description="Revised prompt")
+
+
+class ImageGenerationResponse(BaseModel):
+    """Image generation response (OpenAI compatible)"""
+    created: int = Field(..., description="Unix timestamp")
+    data: List[ImageData] = Field(..., description="List of generated images")
+
+
+# ============== Video Generation API ==============
+
+class VideoGenerationRequest(BaseModel):
+    """Video generation request"""
+    
+    model: str = Field(default="grok-imagine-0.9", description="Model name")
+    prompt: str = Field(..., description="Video description", min_length=1, max_length=4000)
+    image_url: Optional[str] = Field(default=None, description="Source image URL for image-to-video")
+    user: Optional[str] = Field(default=None, description="User identifier")
+
+
+class VideoData(BaseModel):
+    """Generated video data"""
+    url: Optional[str] = Field(default=None, description="Video URL")
+    revised_prompt: Optional[str] = Field(default=None, description="Revised prompt")
+
+
+class VideoGenerationResponse(BaseModel):
+    """Video generation response"""
+    created: int = Field(..., description="Unix timestamp")
+    data: List[VideoData] = Field(..., description="List of generated videos")

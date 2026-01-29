@@ -16,6 +16,8 @@ from app.services.grok.token import token_manager
 from app.api.v1.chat import router as chat_router
 from app.api.v1.models import router as models_router
 from app.api.v1.images import router as images_router
+from app.api.v1.image_gen import router as image_gen_router
+from app.api.v1.video_gen import router as video_gen_router
 from app.api.admin.manage import router as admin_router
 from app.services.mcp import mcp
 
@@ -116,6 +118,8 @@ register_exception_handlers(app)
 # 注册路由
 app.include_router(chat_router, prefix="/v1")
 app.include_router(models_router, prefix="/v1")
+app.include_router(image_gen_router, prefix="/v1")
+app.include_router(video_gen_router, prefix="/v1")
 app.include_router(images_router)
 app.include_router(admin_router)
 
